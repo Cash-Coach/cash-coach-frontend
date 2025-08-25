@@ -1,4 +1,4 @@
-import cash_coach_logo from "./cash-coach-logo.png";
+import cash_coach_logo from "./cash_coach_logo.png";
 import login_bg from "./login_bg.png";
 
 export const assets = {

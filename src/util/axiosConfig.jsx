@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosConfig = axios.create({
-    baseUrl: "https://cash-coach-backend.onrender.com/api",
+    baseURL: "https://cash-coach-backend.onrender.com/api",
     headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
@@ -14,7 +14,7 @@ const excludeEndpoints = ["/login", "/add", "/status", "/activate"];
 // request interceptor
 axiosConfig.interceptors.request.use((config) => {
     const skipToken = excludeEndpoints.some((endpoint) => {
-        config.url?.includes(endpoint)
+        return config.url?.includes(endpoint)
     });
 
     if (!skipToken) {
@@ -43,3 +43,5 @@ axiosConfig.interceptors.response.use((response) => {
     }
     return Promise.reject(error);
 });
+
+export default axiosConfig;
