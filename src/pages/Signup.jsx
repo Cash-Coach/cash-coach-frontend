@@ -23,7 +23,7 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let profileImageUrl = "";
+        let profilePicUrl = "";
         setIsLoading(true);
 
         // basic validation
@@ -51,7 +51,7 @@ const Signup = () => {
             // upload pfp if present
             if(profilePicture) {
                 const pfpURL = await uploadProfilePicture(profilePicture);
-                profileImageUrl = pfpURL || "";
+                profilePicUrl = pfpURL || "";
             }
 
 
@@ -59,7 +59,7 @@ const Signup = () => {
                 fullName,
                 email,
                 password,
-                profileImageUrl
+                profilePicUrl
             })
             if (resp.status === 201) {
                 toast.success("Welcome to Cash Coach " + fullName + "!");

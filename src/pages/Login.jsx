@@ -44,6 +44,7 @@ const Login = () => {
             const {token, user} = resp.data;
             if (token) {
                 localStorage.setItem("token", token);
+                // localStorage.setItem("user", JSON.stringify(user));
                 setUser(user);
                 navToLogin("/dashboard");
             }
