@@ -8,6 +8,7 @@ import axiosConfig from "../util/axiosConfig";
 import toast from "react-hot-toast";
 import Model from "../components/Model";
 import AddCategoryForm from "../components/AddCategoryForm";
+import DeleteAlert from "../components/DeleteAlert";
 
 const Category = () => {
     useUser();
@@ -16,6 +17,10 @@ const Category = () => {
     const [openAddCategoryModel, setOpenAddCategoryModel] = useState(false);
     const [openEditCategoryModel, setOpenEditCategoryModel] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [openDeleteAlert, setOpenDeleteAlert] = useState({
+        show: false,
+        data: null,
+    });
 
 
     const fetchCategoryDetails = async () => { // i think sumns wrong herwe
@@ -99,7 +104,19 @@ const Category = () => {
             fetchCategoryDetails();
         } catch (error_ting) {
             console.error("Error updating 'name' category: ", error_ting.response?.data?.message || error_ting.message);
-            toast.error(("Bitch: " + error_ting.response?.data?.message) || `Unable to update the '${name}' category`);
+            toast.error(("Can't update " + error_ting.response?.data?.message) || `Unable to update the '${name}' category`);
+        }
+    }
+
+    const deleteCategory = async (categoryId) => {
+        try {
+            await axiosConfig.delete(API_ENDPOINTS.DELETE_CATEGORY(categoryId));
+            setOpenDeleteAlert({show: false, data: null});
+            toast.success("Category was deleted successfully.");
+            fetchCategoryDetails();
+        } catch (error_ting) {
+            console.log('Error deleting category', error_ting);
+            toast.error(error_ting.response?.data?.message || "You must erase all transactions relating to this category before you delete it");
         }
     }
 
@@ -118,7 +135,7 @@ const Category = () => {
                 </div>
 
                 {/* Category list */}
-                <CategoryList categories={categoryData} onEditCategory={handleEditCategory}/>
+                <CategoryList categories={categoryData} onEditCategory={handleEditCategory} onDeleteCategory={(id) => setOpenDeleteAlert({show: true, data: id})}/>
 
                 {/* Adding category model*/}
                 <Model
@@ -142,6 +159,17 @@ const Category = () => {
                         onAddCategory={handleUpdateCategory}
                         initialCategoryData={selectedCategory}
                         isEditing={true}
+                    />
+                </Model>
+
+                <Model
+                    isOpen={openDeleteAlert.show}
+                    onClose={() => setOpenDeleteAlert({show: false, data: null})}
+                    title="Delete Category"
+                >
+                    <DeleteAlert
+                        content="Are you sure you want to delete this category?"
+                        onDelete={() => deleteCategory(openDeleteAlert.data)}
                     />
                 </Model>
 

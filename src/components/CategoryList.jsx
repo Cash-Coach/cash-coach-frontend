@@ -1,6 +1,6 @@
-import { Pencil, Tag } from "lucide-react";
+import { Pencil, Tag, Trash } from "lucide-react";
 
-const CategoryList = ({categories, onEditCategory}) => {
+const CategoryList = ({categories, onEditCategory, onDeleteCategory}) => {
     return (
         <div className="card bg-[#f3f1e3] rounded-lg shadow-slate-400 shadow-sm p-4">
             <div className="flex items-center justify-between mb-4">
@@ -41,11 +41,16 @@ const CategoryList = ({categories, onEditCategory}) => {
                                     </p>
                                 </div>
                                 {/** Action buttons */}
-                                <div className="flex items-center gap-2">
+                                <div className="flex flex-col lg:flex-row items-center gap-2">
                                     <button 
                                         onClick = {() => onEditCategory(category)}
-                                        className="shadow-sm shadow-slate-600 w-12 h-12 flex justify-center items-center  text-gray-700 bg-gray-200 hover:bg-emerald-600 hover:text-sky-100 rounded-lg transform transition-transform duration-200 hover:scale-115 group-hover:opacity-100 cursor-pointer">
-                                        <Pencil size={24}/>
+                                        className="shadow-sm shadow-slate-600 w-9 h-9 flex justify-center items-center  text-gray-700 bg-gray-200 hover:bg-emerald-600 hover:text-sky-100 rounded-lg transform transition-transform duration-200 hover:scale-115 group-hover:opacity-100 cursor-pointer">
+                                        <Pencil size={18}/>
+                                    </button>
+                                    <button 
+                                        onClick = {() => onDeleteCategory(category.id)}
+                                        className="shadow-sm shadow-slate-600 w-9 h-9 flex justify-center items-center  text-gray-700 bg-gray-200 hover:bg-rose-600 hover:text-sky-100 rounded-lg transform transition-transform duration-200 hover:scale-115 group-hover:opacity-100 cursor-pointer">
+                                        <Trash size={18}/>
                                     </button>
                                 </div>
                             </div>
