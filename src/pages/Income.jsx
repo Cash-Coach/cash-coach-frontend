@@ -6,7 +6,6 @@ import axiosConfig from "../util/axiosConfig";
 import toast from "react-hot-toast";
 import IncomeList from "../components/IncomeList";
 import Model from "../components/Model";
-import { Plus } from "lucide-react";
 import AddIncomeForm from "../components/AddIncomeForm";
 import DeleteAlert from "../components/DeleteAlert";
 import IncomeOverview from "../components/IncomeOverview";
@@ -137,7 +136,7 @@ const Income = () => {
         try {
             const resp = await axiosConfig.get(API_ENDPOINTS.INCOME_EXCEL_DOWNLOAD, {responseType: "blob"});
             let filename = "income_details.xlsx";
-            const url = window.URL.createObjectURL(new Blob(resp.data));
+            const url = window.URL.createObjectURL(new Blob([resp.data]));
             const link = document.createElement("a");
             link.href = url;
             link.setAttribute("download", filename);

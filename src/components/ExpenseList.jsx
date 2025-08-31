@@ -3,7 +3,7 @@ import TransactionCard from "./TransactionCard";
 import moment from "moment";
 import { useState } from "react";
 
-const IncomeList = ({transactions, onDelete, onEmail, onDownload}) => {
+const ExpenseList = ({transactions, onDelete, onEmail, onDownload}) => {
     const [loaderOne, setLoaderOne] = useState(false);
     const [loaderTwo, setLoaderTwo] = useState(false);
     const handleEmail = async () => {
@@ -25,7 +25,7 @@ const IncomeList = ({transactions, onDelete, onEmail, onDownload}) => {
     return (
         <div className="card bg-[#f3f1e3] rounded-lg shadow-slate-400 shadow-sm p-4">
             <div className="flex items-center justify-between">
-                <h5 className="text-lg font-semibold">Income Sources</h5>
+                <h5 className="text-lg font-semibold">Expenses</h5>
                 <div className="flex flex-col md:flex-row items-end gap-3 mr-7">
                     <button 
                         onClick={handleEmail}
@@ -67,16 +67,16 @@ const IncomeList = ({transactions, onDelete, onEmail, onDownload}) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-                {/* display the incomes */}
-                {transactions?.map((income) => (
+                {/* display the expenses */}
+                {transactions?.map((expense) => (
                     <TransactionCard 
-                        key={income.id}
-                        title={income.name}
-                        icon={income.icon}
-                        date={moment(income.date).format("Do MMM YYYY")}
-                        amount={income.amount}
-                        type="income"
-                        onDelete={() => onDelete(income.id)}
+                        key={expense.id}
+                        title={expense.name}
+                        icon={expense.icon}
+                        date={moment(expense.date).format("Do MMM YYYY")}
+                        amount={expense.amount}
+                        type="expense"
+                        onDelete={() => onDelete(expense.id)}
                     />
                 ))}
             </div>
@@ -85,4 +85,4 @@ const IncomeList = ({transactions, onDelete, onEmail, onDownload}) => {
     )
 }
 
-export default IncomeList;
+export default ExpenseList;

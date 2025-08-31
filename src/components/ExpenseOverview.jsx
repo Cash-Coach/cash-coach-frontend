@@ -3,11 +3,11 @@ import { prepareLineChartData } from "../util/util";
 import CustomLineChart from "./CustomLineChart";
 import { Plus } from "lucide-react";
 
-const IncomeOverview = ({transactions, onAddIncome}) => {
+const ExpenseOverview = ({transactions, onAddExpense}) => {
     
     const [chartData, setChartData] = useState([]);
     useEffect(() => {
-        const result = prepareLineChartData(transactions, "income");
+        const result = prepareLineChartData(transactions, "expense");
         console.log(result);
         setChartData(result);
 
@@ -19,17 +19,17 @@ const IncomeOverview = ({transactions, onAddIncome}) => {
             <div className="flex items-center justify-between">
                 <div>
                     <h5 className="text-lg font-semibold">
-                        Income Overview
+                        Expense Overview
                     </h5>
                     <p className="text-xs text-gray-400 mt-0 5">
-                        Track your earnings over time and analyze your income trends
+                        Track your spendings over time and analyze your expense trends
                     </p>
                 </div>
                 <button
-                    onClick={onAddIncome}
-                    className="add-btn bg-emerald-100 border-1 border-emerald-600 text-emerald-600 font-bold p-2 rounded-lg shadow-sm shadow-slate-400 transform transition-transform duration-200 hover:scale-105 hover:cursor-pointer flex items-center gap-1">
+                    onClick={onAddExpense}
+                    className="add-btn bg-fuchsia-100 border-1 border-fuchsia-700 text-fuchsia-700 font-bold p-2 rounded-lg shadow-sm shadow-slate-400 transform transition-transform duration-200 hover:scale-105 hover:cursor-pointer flex items-center gap-1">
                     <Plus size={15} className="text-lg" />
-                    Add Income
+                    Add Expense
                 </button>
             </div>
             <div className="mt-10">
@@ -39,4 +39,4 @@ const IncomeOverview = ({transactions, onAddIncome}) => {
     )
 }
 
-export default IncomeOverview;
+export default ExpenseOverview;

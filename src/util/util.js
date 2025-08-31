@@ -14,7 +14,7 @@ export const addThousandsSeparator = (number, separator = ',') => {
     return (isNegative ? '-' : '') + formattedInteger + decimalPart;
 }
 
-export const prepareIncomeLineChartData = (transactions) => {
+export const prepareLineChartData = (transactions, type) => {
     // Handle empty or invalid input
     if (!transactions || !Array.isArray(transactions) || transactions.length === 0) {
         return [];
@@ -65,7 +65,8 @@ export const prepareIncomeLineChartData = (transactions) => {
             date: date,
             totalAmount: totalAmount,
             items: items,
-            month: formatDate(date)
+            month: formatDate(date),
+            transaction_type: type
         };
     });
 

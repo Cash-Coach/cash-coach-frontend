@@ -27,8 +27,13 @@ const CustomLineChart = ({data}) => {
         date: item.date,
         month: item.month,
         totalAmount: item.totalAmount,
-        items: item.items
+        items: item.items,
+        transaction_type: item.transaction_type // Include transaction_type in chart data
     }));
+
+    const transactionType = chartData.length > 0 ? chartData[0].transaction_type : '';
+    console.log(chartData);
+    const colorway = transactionType === 'income' ? "text-emerald-600" : "text-fuchsia-700";
 
     // Custom tooltip component
     const CustomTooltip = ({ active, payload }) => {
@@ -42,10 +47,11 @@ const CustomLineChart = ({data}) => {
                 return acc;
             }, {});
 
+            
             return (
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 min-w-48">
                     <p className="font-semibold text-gray-800 mb-2">{data.month}</p>
-                    <p className="text-lg font-bold text-emerald-600 mb-2">
+                    <p className={`text-lg font-bold ${colorway} mb-2`}>
                         Total: ${data.totalAmount.toLocaleString()}
                     </p>
                     <div className="space-y-1">
@@ -82,6 +88,8 @@ const CustomLineChart = ({data}) => {
         );
     }
 
+    const color = transactionType === 'income' ? "#059669" : "#8B008B";
+
     return (
         <div className="w-full h-80">
             <ResponsiveContainer width="100%" height="100%">
@@ -96,8 +104,8 @@ const CustomLineChart = ({data}) => {
                 >
                     <defs>
                         <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#059669" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#059669" stopOpacity={0.05}/>
+                            <stop offset="5%" stopColor={`${color}`} stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor={`${color}`} stopOpacity={0.05}/>
                         </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -119,11 +127,11 @@ const CustomLineChart = ({data}) => {
                     <Area
                         type="monotone"
                         dataKey="totalAmount"
-                        stroke="#059669"
+                        stroke={`${color}`}
                         strokeWidth={3}
                         fill="url(#incomeGradient)"
-                        dot={{ fill: '#059669', strokeWidth: 2, r: 5 }}
-                        activeDot={{ r: 7, fill: '#059669', strokeWidth: 2 }}
+                        dot={{ fill: `${color}`, strokeWidth: 2, r: 5 }}
+                        activeDot={{ r: 7, fill: `${color}`, strokeWidth: 2 }}
                     />
                 </AreaChart>
             </ResponsiveContainer>
