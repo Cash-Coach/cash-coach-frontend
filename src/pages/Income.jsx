@@ -160,9 +160,10 @@ const Income = () => {
         <Dashboard activeMenu="Income">
             <div className="my-5 mx-auto">
                 <div className="grid grid-cols-1 gap-6">
-                    <div className="grid grid-cols-1 gap-6">
-                        <IncomeOverview transactions={incomeData} onAddIncome={() => setOpenAddIncomeModel(true)}/>
-                    </div>
+
+                    <h2 className="text-2xl font-semibold">Your Income History</h2>
+                    <IncomeOverview transactions={incomeData} onAddIncome={() => setOpenAddIncomeModel(true)}/>
+
                     <IncomeList 
                         transactions={incomeData}
                         onDelete={(id) => setOpenDeleteAlert({show: true, data: id})}

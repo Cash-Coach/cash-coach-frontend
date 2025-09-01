@@ -159,9 +159,10 @@ const Expense = () => {
         <Dashboard activeMenu="Expense">
             <div className="my-5 mx-auto">
                 <div className="grid grid-cols-1 gap-6">
-                    <div className="grid grid-cols-1 gap-6">
-                        <ExpenseOverview transactions={expenseData} onAddExpense={() => setOpenAddExpenseModel(true)}/>
-                    </div>
+                    <h2 className="text-2xl font-semibold">Your Expense History</h2>
+
+                    <ExpenseOverview transactions={expenseData} onAddExpense={() => setOpenAddExpenseModel(true)}/>
+                    
                     <ExpenseList 
                         transactions={expenseData}
                         onDelete={(id) => setOpenDeleteAlert({show: true, data: id})}
