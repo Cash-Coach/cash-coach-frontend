@@ -7,6 +7,8 @@ import Filter from "./pages/Filter.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import { Toaster } from "react-hot-toast";
+import LandingPage from "./pages/LandingPage.jsx";
+import About from "./pages/About.jsx";
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Root />}/>
           <Route path="/dashboard" element={<Home />} />
+          <Route path="/cashcoach" element={<LandingPage />} />
+          <Route path="/about" element={<About />} />
           <Route path="/income" element={<Income />} />
           <Route path="/expense" element={<Expense />} />
           <Route path="/category" element={<Category />} />
@@ -33,7 +37,7 @@ const Root = () => {
   return isAuthenticated ? (
     <Navigate to="/dashboard"/>
   ) : (
-    <Navigate to="/login"/>
+    <Navigate to="/cashcoach"/>
   );
 }
 

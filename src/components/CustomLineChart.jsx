@@ -114,9 +114,9 @@ const CustomLineChart = ({data}) => {
     }
 
     // Dynamic colors based on transaction type
-    const strokeColor = transactionType === 'income' ? '#059669' : '#dc2626';
+    const strokeColor = transactionType === 'income' ? '#059669' : '#A21CAF';
     const gradientId = transactionType === 'income' ? 'incomeGradient' : 'expenseGradient';
-    const gradientColor = transactionType === 'income' ? '#059669' : '#dc2626';
+    const gradientColor = transactionType === 'income' ? '#059669' : '#A21CAF';
 
     return (
         <div className="w-full h-80">

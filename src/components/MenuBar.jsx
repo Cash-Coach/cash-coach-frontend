@@ -60,7 +60,7 @@ const MenuBar = ({activeMenu}) => {
                 <button
                     onClick={() => setShowDropDown(!showDropDown) }
                     className="flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2">
-                    <User className="text-green-600" />
+                    {user?.profilePicUrl ? (<img src={user.profilePicUrl} alt="logo" className="rounded-full h-10 w-10" />) :(<User className="text-green-600" />)}
                 </button>
 
                  {/* Drop down menu */}
@@ -70,7 +70,7 @@ const MenuBar = ({activeMenu}) => {
                         <div className="px-4 py-3 border-b border-gray-100">
                             <div className="flex items-center gap-3">
                                 <div className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full">
-                                    <User className="w-4 h-4 text-green-600"/>
+                                    {user?.profilePicUrl ? (<img src={user.profilePicUrl} alt="logo" className="rounded-full h-8 w-8" />) :(<User className="text-green-600" />)}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="text-sm font-medium text-gray-800 truncate">

@@ -11,24 +11,33 @@ import toast from "react-hot-toast";
 
 const Sidebar = ({activeMenu}) => {
 
-    const {user} = useContext(AppContext);
-    const [ pfp, setPfp ] = useState(null);
+    const {user, setUser} = useContext(AppContext);
+    const [ pfp, setPfp ] = useState(user?.profilePicUrl || null);
+    const [hasInitialized, setHasInitialized] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user?.profilePicUrl && !pfp) {
+        if (user?.profilePicUrl && !pfp &&!hasInitialized) {
             setPfp(user.profilePicUrl);
         }
+        setHasInitialized(true);
     }, [user?.profilePicUrl, pfp]);
 
     useEffect(() => {
         const updatePfp = async () => {
+            if (!hasInitialized) return;
+            console.log(user?.profilePicUrl);
+            // if (pfp === null && user?.profilePicUrl) {
+            //     return; // Don't delete from database
+            // }
+
             if (pfp === null) {
                 try {
                     const resp = await axiosConfig.put(API_ENDPOINTS.UPDATE_PROFILE(user.id), {
                         profilePicUrl: null
                     });
                     if (resp.status === 200) {
+                        setUser(prev => ({...prev, profilePicUrl: null}));
                         toast.success("Profile picture removed!");
                     }
                 } catch(error) {
@@ -50,6 +59,9 @@ const Sidebar = ({activeMenu}) => {
                 });
                 console.log(resp);
                 if (resp.status === 200) {
+                    setPfp(profilePicUrl);
+                    // Update user context
+                    setUser(prev => ({...prev, profilePicUrl}));
                     toast.success("Updated profile picture!");
                 }
             } catch(error_ting) {
@@ -59,7 +71,7 @@ const Sidebar = ({activeMenu}) => {
         };
         
         updatePfp();
-    }, [pfp]);
+    }, [pfp, hasInitialized]);
 
     return (
         <div className="w-64 h-[calc(100vh-61px)] bg-[#f3f1e3] border-gray-200/50 shadow-sm shadow-slate-400 p-5 sticky top-[61px] z-20">

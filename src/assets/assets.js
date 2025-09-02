@@ -1,10 +1,15 @@
 import { Coins, FunnelPlus, LayoutDashboard, List, Wallet } from "lucide-react";
 import cash_coach_logo from "./cash_coach_logo.png";
 import login_bg from "./login_bg.png";
+import cash_coach_logo_dos from "./cash_coach_logo_dos.png";
+import sample_dashboard from "./sample_dashboard.png";
+
 
 export const assets = {
     cash_coach_logo,
     login_bg,
+    cash_coach_logo_dos,
+    sample_dashboard
 }
 
 export const SIDE_BAR_DATA = [
