@@ -62,7 +62,7 @@ const Signup = () => {
                 profilePicUrl
             })
             if (resp.status === 201) {
-                toast.success("Welcome to Cash Coach " + fullName + "!");
+                toast.success("Please check your email " + fullName + "!");
                 navToLogin("/login");
             }
         } catch(error_ting) {
@@ -79,7 +79,7 @@ const Signup = () => {
             <img src={assets.login_bg} alt="Background" className="absolute inset-0 w-full h-full object-cover filter blur-lg" />
             <div className="relative z-10 w-full max-w-lg px-6">
 
-                <div className="bg-[#fffedf] bg-opacity-95 backdrop-blur-sm rounded-lg shadow-2xl p-8 max-h-[90vh] overflow-y-auto">
+                <div className="bg-[#f3f1e3] bg-opacity-95 backdrop-blur-sm rounded-lg shadow-2xl p-8 max-h-[90vh] overflow-y-auto">
                     <h3 className="text-2xl font-semibold text-black text-center mb-2">
                         Join Cash Coach
                     </h3>

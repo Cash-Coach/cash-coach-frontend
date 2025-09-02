@@ -16,7 +16,7 @@ const MenuBar = ({activeMenu}) => {
         localStorage.clear();
         clearUser();
         setShowDropDown(false);
-        navigate("/login");
+        navigate("/cashcoach");
     }
 
     useEffect(() => { 

@@ -24,7 +24,7 @@ export const useUser = () => {
                 console.log("You got fleeced twin", error_ting);
                 if (isMounted) {
                     clearUser();
-                    navigate("/login");
+                    navigate("/cashcoach");
                 }
             }
         }
