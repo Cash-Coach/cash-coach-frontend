@@ -10,17 +10,41 @@ const CustomLineChart = ({data}) => {
         );
     }
 
+    // Debug logs to check the data
+    console.log("Raw data received:", data);
+    console.log("Current date:", new Date());
+    console.log("Current month:", new Date().getMonth());
+    console.log("Current year:", new Date().getFullYear());
+
     // Filter data for current month only
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
     
     const currentMonthData = data.filter(item => {
-        const itemDate = new Date(item.date);
+        // Parse the date string more reliably
+        const [year, month, day] = item.date.split('-').map(Number);
+        
+        // Create date in local timezone to avoid timezone issues
+        const itemDate = new Date(year, month - 1, day); // month is 0-indexed
+        
+        console.log(`Checking date: ${item.date} -> Month: ${itemDate.getMonth()}, Year: ${itemDate.getFullYear()}`);
+        
         return itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
     });
 
+    console.log("Filtered current month data:", currentMonthData);
+
     // Sort data by date in ascending order
-    const sortedData = currentMonthData.sort((a, b) => new Date(a.date) - new Date(b.date));
+    const sortedData = currentMonthData.sort((a, b) => {
+        // Parse dates more reliably for sorting
+        const [yearA, monthA, dayA] = a.date.split('-').map(Number);
+        const [yearB, monthB, dayB] = b.date.split('-').map(Number);
+        
+        const dateA = new Date(yearA, monthA - 1, dayA);
+        const dateB = new Date(yearB, monthB - 1, dayB);
+        
+        return dateA - dateB;
+    });
 
     // Transform data for recharts format
     const chartData = sortedData.map(item => ({
@@ -31,9 +55,9 @@ const CustomLineChart = ({data}) => {
         transaction_type: item.transaction_type // Include transaction_type in chart data
     }));
 
-    const transactionType = chartData.length > 0 ? chartData[0].transaction_type : '';
-    console.log(chartData);
-    const colorway = transactionType === 'income' ? "text-emerald-600" : "text-fuchsia-700";
+    // Get transaction type from first item (all items should have same type)
+    const transactionType = chartData.length > 0 ? chartData[0].transaction_type : 'income';
+    const colorway = transactionType === 'income' ? "text-emerald-600" : "text-rose-600";
 
     // Custom tooltip component
     const CustomTooltip = ({ active, payload }) => {
@@ -48,6 +72,7 @@ const CustomLineChart = ({data}) => {
             }, {});
 
             
+            console.log(data);
             return (
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 min-w-48">
                     <p className="font-semibold text-gray-800 mb-2">{data.month}</p>
@@ -83,12 +108,15 @@ const CustomLineChart = ({data}) => {
     if (chartData.length === 0) {
         return (
             <div className="w-full h-80 flex items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                <p className="text-gray-500 text-lg">No income data for current month</p>
+                <p className="text-gray-500 text-lg">No {transactionType} data for current month</p>
             </div>
         );
     }
 
-    const color = transactionType === 'income' ? "#059669" : "#8B008B";
+    // Dynamic colors based on transaction type
+    const strokeColor = transactionType === 'income' ? '#059669' : '#dc2626';
+    const gradientId = transactionType === 'income' ? 'incomeGradient' : 'expenseGradient';
+    const gradientColor = transactionType === 'income' ? '#059669' : '#dc2626';
 
     return (
         <div className="w-full h-80">
@@ -103,9 +131,9 @@ const CustomLineChart = ({data}) => {
                     }}
                 >
                     <defs>
-                        <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor={`${color}`} stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor={`${color}`} stopOpacity={0.05}/>
+                        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor={gradientColor} stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor={gradientColor} stopOpacity={0.05}/>
                         </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -127,11 +155,11 @@ const CustomLineChart = ({data}) => {
                     <Area
                         type="monotone"
                         dataKey="totalAmount"
-                        stroke={`${color}`}
+                        stroke={strokeColor}
                         strokeWidth={3}
-                        fill="url(#incomeGradient)"
-                        dot={{ fill: `${color}`, strokeWidth: 2, r: 5 }}
-                        activeDot={{ r: 7, fill: `${color}`, strokeWidth: 2 }}
+                        fill={`url(#${gradientId})`}
+                        dot={{ fill: strokeColor, strokeWidth: 2, r: 5 }}
+                        activeDot={{ r: 7, fill: strokeColor, strokeWidth: 2 }}
                     />
                 </AreaChart>
             </ResponsiveContainer>

@@ -1,11 +1,12 @@
-export const BASE_URL = "https://cash-coach-backend.onrender.com/api";
-// export const BASE_URL = "http://localhost:8080/api";
+// export const BASE_URL = "https://cash-coach-backend.onrender.com/api";
+export const BASE_URL = "http://localhost:8080/api";
 const CLOUDINARY_CLOUD_NAME = "dd27dpjpn";
 
 export const API_ENDPOINTS = {
     LOGIN: "/login",
     ADD: "/add",
     GET_PROFILE: "/profile",
+    UPDATE_PROFILE: (profileId) => `/profile-pic/${profileId}`,
     GET_ALL_CATEGORIES:"/categories",
     ADD_CATEGORY: "/categories",
     UPDATE_CATEGORY: (id) => `/categories/${id}`,

@@ -1,12 +1,30 @@
 import { Trash, Upload, User } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const ProfilePhotoSelector = ({image, setImage}) => {
     const inputRef = useRef(null);
     const [previewURL, setPreviewURL] = useState(null);
 
+    useEffect(() => {
+        if (image) {
+            if (typeof image === 'string') {
+                setPreviewURL(image);
+            } else {
+                // It's a File object, create preview
+                const preview = URL.createObjectURL(image);
+                setPreviewURL(preview);
+                
+                // Cleanup function to revoke object URL
+                return () => URL.revokeObjectURL(preview);
+            }
+        } else {
+            setPreviewURL(null);
+        }
+    }, [image]);
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
+        console.log(file);
         if (file) {
             setImage(file);
 
@@ -19,6 +37,9 @@ const ProfilePhotoSelector = ({image, setImage}) => {
         e.preventDefault();
         setImage(null);
         setPreviewURL(null);
+        if (inputRef.current) {
+            inputRef.current.value = '';
+        }
     }
 
     const onChooseFile = (e) => {
@@ -49,7 +70,7 @@ const ProfilePhotoSelector = ({image, setImage}) => {
                     <img src={previewURL} alt="profile photo" className="w-20 h-20 rounded-full object-cover"/>
                     <button 
                         onClick={handleRemoveImage}
-                        className="w-8 h-8 flex items-center justify-center bg-red-800 text-white rounded-full absolute -bottom-1 -right-1">
+                        className="w-8 h-8 flex items-center justify-center bg-red-800 text-white rounded-full absolute -bottom-1 -right-1 opacity-0 hover:opacity-100">
                         <Trash size={15} className="hover:cursor-pointer"/>
                     </button>
                 </div>

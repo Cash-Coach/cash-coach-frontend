@@ -1,22 +1,70 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { User } from "lucide-react";
 import { SIDE_BAR_DATA } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
+import ProfilePhotoSelector from "./ProfilePhotoSelector";
+import axiosConfig from "../util/axiosConfig";
+import { API_ENDPOINTS } from "../util/apiEndpoints";
+import uploadProfilePicture from "../util/uploadProfilePicture";
+import toast from "react-hot-toast";
 
 const Sidebar = ({activeMenu}) => {
 
     const {user} = useContext(AppContext);
+    const [ pfp, setPfp ] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user?.profilePicUrl && !pfp) {
+            setPfp(user.profilePicUrl);
+        }
+    }, [user?.profilePicUrl, pfp]);
+
+    useEffect(() => {
+        const updatePfp = async () => {
+            if (pfp === null) {
+                try {
+                    const resp = await axiosConfig.put(API_ENDPOINTS.UPDATE_PROFILE(user.id), {
+                        profilePicUrl: null
+                    });
+                    if (resp.status === 200) {
+                        toast.success("Profile picture removed!");
+                    }
+                } catch(error) {
+                    console.error("Error removing profile picture:", error);
+                    toast.error("Could not remove profile picture, please try again.");
+                }
+                return;
+            }
+
+            if (!pfp || typeof pfp === 'string') return;
+            
+            let profilePicUrl = "";
+            try {
+                const pfpURL = await uploadProfilePicture(pfp);
+                profilePicUrl = pfpURL || "";
+                
+                const resp = await axiosConfig.put(API_ENDPOINTS.UPDATE_PROFILE(user.id), {
+                    profilePicUrl
+                });
+                console.log(resp);
+                if (resp.status === 200) {
+                    toast.success("Updated profile picture!");
+                }
+            } catch(error_ting) {
+                console.error("oh nah twin.", error_ting);
+                toast.error("Could not upload profile picture, please try again.");
+            }
+        };
+        
+        updatePfp();
+    }, [pfp]);
 
     return (
         <div className="w-64 h-[calc(100vh-61px)] bg-[#f3f1e3] border-gray-200/50 shadow-sm shadow-slate-400 p-5 sticky top-[61px] z-20">
-            <div className="flex flex-col items-center justify-center gap-3 mt-3 mb-7">
-                {user?.profilePicUrl ? (
-                    <img src={user?.profilePicUrl || ""} alt="profile picture" className="w-20 h-20 border-2 shadow-[0_0_5px_rgba(0,0,0,2)] rounded-full" />
-                ):(
-                    <User className="text-green-600 w-20 h-20 text-xl" />
-                )}
+            <div className="flex flex-col items-center justify-center mt-3 mb-12">
+                <ProfilePhotoSelector image={pfp} setImage={setPfp}/>
                 <h5 className="text-gray-950 font-medium leading-6">{user?.fullName || ""}</h5>
             </div>
             {SIDE_BAR_DATA.map((item, index) => (

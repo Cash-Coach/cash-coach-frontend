@@ -72,7 +72,7 @@ const ExpenseList = ({transactions, onDelete, onEmail, onDownload}) => {
                     <TransactionCard 
                         key={expense.id}
                         title={expense.name}
-                        icon={expense.icon}
+                        icon={expense}
                         date={moment(expense.date).format("Do MMM YYYY")}
                         amount={expense.amount}
                         type="expense"
