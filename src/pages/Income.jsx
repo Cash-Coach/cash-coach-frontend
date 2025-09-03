@@ -17,6 +17,10 @@ const Income = () => {
     const [loading, setLoading] = useState(false);
     
     const [openAddIncomeModel, setOpenAddIncomeModel] = useState(false);
+    const [openUpdateIncomeModel, setOpenUpdateIncomeModel] = useState({
+        show: false,
+        data: null
+    });
     const [openDeleteAlert, setOpenDeleteAlert] = useState({
         show: false,
         data: null,
@@ -108,6 +112,56 @@ const Income = () => {
 
     }
 
+    const handleUpdateIncome = async (income) => {
+        const {name, amount, date, icon, categoryId} = income;
+
+        //validation
+        if (!name.trim()) {
+            toast.error("Please enter a name");
+            return;
+        }
+
+        if (!amount || isNaN(amount) || Number(amount) < 0) {
+            toast.error("Amount should be a valid number greater than 0");
+            return;
+        }
+
+        if (!date) {
+            toast.error("Please select a date");
+            return;
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+        if (date > today) {
+            toast.error("Date can't be in the future");
+            return;
+        }
+
+        if(!categoryId) {
+            toast.error("Please select the category");
+            return;
+        }
+
+        try {
+            const resp = await axiosConfig.put(API_ENDPOINTS.UPDATE_INCOME(income.id), {
+                name,
+                amount: Number(amount),
+                date,
+                icon,
+                categoryId
+            })
+            if (resp.status === 200) {
+                setOpenUpdateIncomeModel(false);
+                toast.success("Income updated successfully");
+                fetchIncomeDetails();
+                fetchIncomeCategories();
+            }
+        } catch (error_ting) {
+            console.log("error updating income", error_ting);
+            toast.error(error_ting.response?.data?.message || "Failed to update income");
+        }
+    }
+
     const deleteIncome = async (id) => {
         try {
             await axiosConfig.delete(API_ENDPOINTS.DELETE_INCOME(id));
@@ -160,12 +214,13 @@ const Income = () => {
         <Dashboard activeMenu="Income">
             <div className="my-5 mx-auto">
                 <div className="grid grid-cols-1 gap-6">
-
                     <h2 className="text-2xl font-semibold">Your Income History</h2>
+
                     <IncomeOverview transactions={incomeData} onAddIncome={() => setOpenAddIncomeModel(true)}/>
 
                     <IncomeList 
                         transactions={incomeData}
+                        onEdit={(income) => setOpenUpdateIncomeModel({show: true, data: income})}
                         onDelete={(id) => setOpenDeleteAlert({show: true, data: id})}
                         onEmail={handleEmailIncomeDetails}
                         onDownload={handleDownloadIncomeDetails}
@@ -179,6 +234,19 @@ const Income = () => {
                     >
                         <AddIncomeForm
                             onAddIncome={(income) => handleAddIncome(income)}
+                            categories={categories}
+                        />
+                    </Model>
+
+                    {/* Update Income Model */}
+                    <Model
+                        isOpen={openUpdateIncomeModel.show}
+                        onClose={() => setOpenUpdateIncomeModel(false)}
+                        title="Update Income"
+                    >
+                        <AddIncomeForm
+                            onAddIncome={(income) => handleUpdateIncome(income)}
+                            formerIncome={openUpdateIncomeModel.data}
                             categories={categories}
                         />
                     </Model>

@@ -1,5 +1,5 @@
-export const BASE_URL = "https://cash-coach-backend.onrender.com/api";
-// export const BASE_URL = "http://localhost:8080/api";
+// export const BASE_URL = "https://cash-coach-backend.onrender.com/api";
+export const BASE_URL = "http://localhost:8080/api";
 const CLOUDINARY_CLOUD_NAME = "dd27dpjpn";
 
 export const API_ENDPOINTS = {
@@ -15,6 +15,8 @@ export const API_ENDPOINTS = {
     CATEGORY_BY_TYPE: (type) => `/categories/${type}`,
     ADD_INCOME: "/incomes",
     ADD_EXPENSE: "/expenses",
+    UPDATE_INCOME: (incomeId) => `/incomes/${incomeId}`,
+    UPDATE_EXPENSE: (expenseId) => `/expenses/${expenseId}`,
     DELETE_INCOME: (incomeId) => `/incomes/${incomeId}`,
     DELETE_EXPENSE: (expenseId) => `/expenses/${expenseId}`,
     DELETE_CATEGORY: (categoryId) => `/categories/${categoryId}`,

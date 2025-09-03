@@ -22,7 +22,9 @@ const Home = () => {
     const fetchDashboardData = async () => {
         if (loading) return;
         setLoading(true);
+        
         try {
+            
             const resp = await axiosConfig.get(API_ENDPOINTS.DASHBOARD_DATA);
             if (resp.status === 200) {
                 setDashboardData(resp.data);

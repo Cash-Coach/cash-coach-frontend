@@ -31,7 +31,7 @@ const Sidebar = ({activeMenu}) => {
             //     return; // Don't delete from database
             // }
 
-            if (pfp === null) {
+            if (pfp === null && user?.profilePicUrl !== null) {
                 try {
                     const resp = await axiosConfig.put(API_ENDPOINTS.UPDATE_PROFILE(user.id), {
                         profilePicUrl: null
@@ -74,22 +74,28 @@ const Sidebar = ({activeMenu}) => {
     }, [pfp, hasInitialized]);
 
     return (
-        <div className="w-64 h-[calc(100vh-61px)] bg-[#f3f1e3] border-gray-200/50 shadow-sm shadow-slate-400 p-5 sticky top-[61px] z-20">
-            <div className="flex flex-col items-center justify-center mt-3 mb-12">
+        <div className="w-full sm:w-64 lg:w-72 min-h-[calc(100vh-61px)] max-h-[calc(100vh-61px)] bg-[#f3f1e3] border-gray-200/50 shadow-sm shadow-slate-400 p-3 sm:p-5 sticky top-[61px] z-20 overflow-y-auto">
+            <div className="flex flex-col items-center justify-center mt-2 sm:mt-3 mb-6 sm:mb-12">
                 <ProfilePhotoSelector image={pfp} setImage={setPfp}/>
-                <h5 className="text-gray-950 font-medium leading-6">{user?.fullName || ""}</h5>
+                <h5 className="text-gray-950 font-medium leading-6 text-center text-sm sm:text-base px-2 mt-2">{user?.fullName || ""}</h5>
             </div>
-            {SIDE_BAR_DATA.map((item, index) => (
-                <button
-                    onClick={() => navigate(item.path)} 
-                    key={`menu_${index}`}
-                    className={`cursor-pointer w-full flex items-center gap-4 text-[15px] py-3 px-6 rounded-lg mb-3 ${activeMenu === item.label ? "text-white bg-emerald-600" : "transform transition-transform duration-200 hover:scale-105 hover:border-2 hover:border-emerald-500"}`}>
-                        <span>
-                            <item.icon className="text-xl" />
-                            {item.label}
-                        </span>
-                </button>
-            ))}
+            <div className="space-y-2 sm:space-y-3">
+                {SIDE_BAR_DATA.map((item, index) => (
+                    <button
+                        onClick={() => navigate(item.path)} 
+                        key={`menu_${index}`}
+                        className={`cursor-pointer w-full flex items-center gap-2 sm:gap-4 text-sm sm:text-[15px] py-2 sm:py-3 px-3 sm:px-6 rounded-lg transition-all duration-200 ${
+                            activeMenu === item.label 
+                                ? "text-white bg-emerald-600" 
+                                : "hover:scale-105 hover:border-2 hover:border-emerald-500"
+                        }`}>
+                            <span className="flex items-center gap-2 sm:gap-3">
+                                <item.icon className="text-lg sm:text-xl flex-shrink-0" />
+                                <span className="truncate">{item.label}</span>
+                            </span>
+                    </button>
+                ))}
+            </div>
         </div>
     )
 }

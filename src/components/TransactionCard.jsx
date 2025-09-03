@@ -1,7 +1,7 @@
-import { Trash2, TrendingDown, TrendingUp, UtensilsCrossed } from "lucide-react";
+import { Pencil, Trash2, TrendingDown, TrendingUp, UtensilsCrossed } from "lucide-react";
 import { addThousandsSeparator } from "../util/util";
 
-const TransactionCard = ({icon, title, date, amount, type, hideDeleteBtn, onDelete}) => {
+const TransactionCard = ({icon, title, date, amount, type, hideEditBtn, onEdit, hideDeleteBtn, onDelete}) => {
     const getAmountStyles = () => type === 'income' ? 'bg-green-100 text-green-800' : 'bg-red-200 text-red-800';
     
     return (
@@ -20,7 +20,15 @@ const TransactionCard = ({icon, title, date, amount, type, hideDeleteBtn, onDele
                     <p className="text-xs text-gray-400 mt-1">{date}</p>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
+                    {!hideEditBtn && (
+                        <button 
+                            onClick={onEdit}
+                            className="text-gray-400 hover:text-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <Pencil size={18}/>
+                        </button>
+                    )}
+
                     {!hideDeleteBtn && (
                         <button 
                             onClick={onDelete}

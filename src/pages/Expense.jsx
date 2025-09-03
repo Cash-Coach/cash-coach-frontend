@@ -17,6 +17,10 @@ const Expense = () => {
     const [loading, setLoading] = useState(false);
     
     const [openAddExpenseModel, setOpenAddExpenseModel] = useState(false);
+    const [openUpdateExpenseModel, setOpenUpdateExpenseModel] = useState({
+        show: false,
+        data: null
+    });
     const [openDeleteAlert, setOpenDeleteAlert] = useState({
         show: false,
         data: null,
@@ -108,6 +112,56 @@ const Expense = () => {
 
     }
 
+    const handleUpdateExpense = async (expense) => {
+        const {name, amount, date, icon, categoryId} = expense;
+
+        //validation
+        if (!name.trim()) {
+            toast.error("Please enter a name");
+            return;
+        }
+
+        if (!amount || isNaN(amount) || Number(amount) < 0) {
+            toast.error("Amount should be a valid number greater than 0");
+            return;
+        }
+
+        if (!date) {
+            toast.error("Please select a date");
+            return;
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+        if (date > today) {
+            toast.error("Date can't be in the future");
+            return;
+        }
+
+        if(!categoryId) {
+            toast.error("Please select the category");
+            return;
+        }
+
+        try {
+            const resp = await axiosConfig.put(API_ENDPOINTS.UPDATE_EXPENSE(expense.id), {
+                name,
+                amount: Number(amount),
+                date,
+                icon,
+                categoryId
+            })
+            if (resp.status === 200) {
+                setOpenUpdateExpenseModel(false);
+                toast.success("Expense updated successfully");
+                fetchExpenseDetails();
+                fetchExpenseCategories();
+            }
+        } catch (error_ting) {
+            console.log("error updating expense", error_ting);
+            toast.error(error_ting.response?.data?.message || "Failed to update expense");
+        }
+    }
+
     const deleteExpense = async (id) => {
         try {
             await axiosConfig.delete(API_ENDPOINTS.DELETE_EXPENSE(id));
@@ -155,6 +209,7 @@ const Expense = () => {
         fetchExpenseDetails();
         fetchExpenseCategories();
     },[])
+    
     return (
         <Dashboard activeMenu="Expense">
             <div className="my-5 mx-auto">
@@ -165,6 +220,7 @@ const Expense = () => {
                     
                     <ExpenseList 
                         transactions={expenseData}
+                        onEdit={(expense) => setOpenUpdateExpenseModel({show: true, data: expense})}
                         onDelete={(id) => setOpenDeleteAlert({show: true, data: id})}
                         onEmail={handleEmailExpenseDetails}
                         onDownload={handleDownloadExpenseDetails}
@@ -178,6 +234,19 @@ const Expense = () => {
                     >
                         <AddExpenseForm
                             onAddExpense={(expense) => handleAddExpense(expense)}
+                            categories={categories}
+                        />
+                    </Model>
+
+                    {/* Update Expense Model */}
+                    <Model
+                        isOpen={openUpdateExpenseModel.show}
+                        onClose={() => setOpenUpdateExpenseModel(false)}
+                        title="Update Expense"
+                    >
+                        <AddExpenseForm
+                            onAddExpense={(expense) => handleUpdateExpense(expense)}
+                            formerExpense={openUpdateExpenseModel.data}
                             categories={categories}
                         />
                     </Model>

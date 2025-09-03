@@ -3,7 +3,7 @@ import TransactionCard from "./TransactionCard";
 import moment from "moment";
 import { useState } from "react";
 
-const ExpenseList = ({transactions, onDelete, onEmail, onDownload}) => {
+const ExpenseList = ({transactions, onEdit, onDelete, onEmail, onDownload}) => {
     const [loaderOne, setLoaderOne] = useState(false);
     const [loaderTwo, setLoaderTwo] = useState(false);
     const handleEmail = async () => {
@@ -76,6 +76,7 @@ const ExpenseList = ({transactions, onDelete, onEmail, onDownload}) => {
                         date={moment(expense.date).format("Do MMM YYYY")}
                         amount={expense.amount}
                         type="expense"
+                        onEdit={() => onEdit(expense)}
                         onDelete={() => onDelete(expense.id)}
                     />
                 ))}

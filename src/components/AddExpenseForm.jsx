@@ -3,8 +3,8 @@ import EmojiTing from "./EmojiTing";
 import Input from "./Input";
 import { LoaderCircle } from "lucide-react";
 
-const AddExpenseForm = ({onAddExpense, categories}) => {
-    const [expense, setExpense] = useState({
+const AddExpenseForm = ({onAddExpense, formerExpense, categories}) => {
+    const [expense, setExpense] = useState(formerExpense || { 
         name: '',
         amount: '',
         date: '',
@@ -84,14 +84,27 @@ const AddExpenseForm = ({onAddExpense, categories}) => {
                     disabled={loading}
                     className="bg-emerald-600 px-3 py-2 rounded-lg text-white">
                     {loading ? (
-                        <>
-                            <LoaderCircle className="animate-spin w-5 h-5" />
-                            "Adding Expense..."
-                        </>
+                        formerExpense ? (
+                            <>
+                                <LoaderCircle className="animate-spin w-5 h-5" />
+                                "Updating Expense..."
+                            </>
+                        ) : (
+                            <>
+                                <LoaderCircle className="animate-spin w-5 h-5" />
+                                "Adding Expense..."
+                            </>
+                        )
                     ):(
-                        <>
-                            Add Expense
-                        </>
+                        formerExpense ? (
+                            <>
+                                Update Expense
+                            </>
+                        ) : (
+                            <>
+                                Add Expense
+                            </>
+                        )
                     )}
                 </button>
             </div>
