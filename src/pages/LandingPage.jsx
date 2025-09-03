@@ -32,7 +32,7 @@ const LandingPage = () => {
                 {/* Hero Section */}
                 <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-7xl">
                     <div className="flex flex-col items-center lg:items-start text-center lg:text-left lg:flex-1">
-                        <h1 className="text-2xl sm:text-3xl md:text-4xl xl:text-5xl text-shadow-sm text-shadow-slate-300 text-emerald-700 mt-6 sm:mt-8 lg:mt-10 font-bold leading-tight">
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-shadow-sm text-shadow-slate-300 text-emerald-700 mt-6 sm:mt-8 lg:mt-10 font-bold leading-tight whitespace-nowrap">
                             Manage your finances with
                         </h1>
                         <h1 className="text-4xl sm:text-6xl md:text-7xl xl:text-8xl text-shadow-sm text-shadow-slate-400 text-yellow-400 py-2 sm:py-3 font-bold leading-tight">

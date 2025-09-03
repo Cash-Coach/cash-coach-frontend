@@ -33,7 +33,7 @@ const About = () => {
                 <img 
                     src={assets.cash_coach_logo_dos} 
                     alt="Background" 
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 sm:w-3/4 md:w-2/3 lg:w-5/6 max-w-[800px] lg:max-w-[1100px] h-auto object-contain blur-lg opacity-10 sm:opacity-15 lg:opacity-20 pointer-events-none select-none" 
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 sm:w-3/4 md:w-2/3 lg:w-5/6 max-w-[800px] lg:max-w-[1100px] h-auto object-contain blur-sm opacity-20 sm:opacity-20 lg:opacity-20 pointer-events-none select-none" 
                 />
                 
                 {/* Quote Content */}
