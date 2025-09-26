@@ -31,7 +31,7 @@ const Home = () => {
             }
         } catch(error_ting) {
             console.error('Something went wrong while fetching dashboard data:', error_ting);
-            toast.error('Something went wrong!');
+            // toast.error('Something went wrong!');
         } finally {
             setLoading(false);
         }
